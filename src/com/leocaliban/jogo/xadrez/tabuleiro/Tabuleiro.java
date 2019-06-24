@@ -28,4 +28,12 @@ public class Tabuleiro {
 		this.colunas = colunas;
 	}
 
+	public Peca buscarPecaPorCoordenadas(int linha, int coluna) {
+		return pecas[linha][coluna];
+	}
+
+	public Peca buscarPecaPorPosicao(Posicao posicao) {
+		return pecas[posicao.getLinha()][posicao.getColuna()];
+	}
+
 }
