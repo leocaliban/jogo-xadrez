@@ -1,6 +1,5 @@
 package com.leocaliban.jogo.xadrez.xadrez;
 
-import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 import com.leocaliban.jogo.xadrez.xadrez.pecas.Rei;
@@ -25,9 +24,13 @@ public class Partida {
 		return matriz;
 	}
 
+	private void posicionarNovaPeca(char coluna, int linha, PecaDeXadrez peca) {
+		tabuleiro.posicionarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
+	}
+
 	private void inicializar() {
-		tabuleiro.posicionarPeca(new Torre(tabuleiro, Cor.BRANCO), new Posicao(2, 1));
-		tabuleiro.posicionarPeca(new Rei(tabuleiro, Cor.PRETO), new Posicao(0, 4));
-		tabuleiro.posicionarPeca(new Rei(tabuleiro, Cor.BRANCO), new Posicao(7, 4));
+		posicionarNovaPeca('b', 6, new Torre(tabuleiro, Cor.BRANCO));
+		posicionarNovaPeca('e', 8, new Rei(tabuleiro, Cor.PRETO));
+		posicionarNovaPeca('e', 1, new Rei(tabuleiro, Cor.BRANCO));
 	}
 }
