@@ -1,6 +1,10 @@
 package com.leocaliban.jogo.xadrez.xadrez;
 
+import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
+import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
+import com.leocaliban.jogo.xadrez.xadrez.pecas.Rei;
+import com.leocaliban.jogo.xadrez.xadrez.pecas.Torre;
 
 public class Partida {
 
@@ -8,6 +12,7 @@ public class Partida {
 
 	public Partida() {
 		this.tabuleiro = new Tabuleiro(8, 8);
+		this.inicializar();
 	}
 
 	public PecaDeXadrez[][] getPecas() {
@@ -18,5 +23,11 @@ public class Partida {
 			}
 		}
 		return matriz;
+	}
+
+	private void inicializar() {
+		tabuleiro.posicionarPeca(new Torre(tabuleiro, Cor.BRANCO), new Posicao(2, 1));
+		tabuleiro.posicionarPeca(new Rei(tabuleiro, Cor.PRETO), new Posicao(0, 4));
+		tabuleiro.posicionarPeca(new Rei(tabuleiro, Cor.BRANCO), new Posicao(7, 4));
 	}
 }
