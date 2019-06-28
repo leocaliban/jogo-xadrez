@@ -1,10 +1,12 @@
 package com.leocaliban.jogo.xadrez.application;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import com.leocaliban.jogo.xadrez.xadrez.Partida;
 import com.leocaliban.jogo.xadrez.xadrez.PecaDeXadrez;
 import com.leocaliban.jogo.xadrez.xadrez.PosicaoXadrez;
+import com.leocaliban.jogo.xadrez.xadrez.exceptions.XadrezException;
 
 public class Main {
 
@@ -17,16 +19,26 @@ public class Main {
 
 		while (true) {
 
-			UI.exibirTabuleiro(partida.getPecas());
-			System.out.println();
-			System.out.println("Origem: ");
-			PosicaoXadrez posicaoOrigem = UI.informarPosicaoDaPeca(scan);
+			try {
+				UI.limparTerminal();
 
-			System.out.println();
-			System.out.println("Destino: ");
-			PosicaoXadrez posicaoDestino = UI.informarPosicaoDaPeca(scan);
+				UI.exibirTabuleiro(partida.getPecas());
+				System.out.println();
+				System.out.println("Origem: ");
+				PosicaoXadrez posicaoOrigem = UI.informarPosicaoDaPeca(scan);
 
-			PecaDeXadrez pecaCapturada = partida.movimentarPeca(posicaoOrigem, posicaoDestino);
+				System.out.println();
+				System.out.println("Destino: ");
+				PosicaoXadrez posicaoDestino = UI.informarPosicaoDaPeca(scan);
+
+				PecaDeXadrez pecaCapturada = partida.movimentarPeca(posicaoOrigem, posicaoDestino);
+			} catch (XadrezException e) {
+				System.out.println(e.getMessage());
+				scan.nextLine();
+			} catch (InputMismatchException e) {
+				System.out.println(e.getMessage());
+				scan.nextLine();
+			}
 		}
 	}
 
