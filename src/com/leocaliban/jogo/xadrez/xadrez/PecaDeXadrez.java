@@ -4,7 +4,7 @@ import com.leocaliban.jogo.xadrez.tabuleiro.Peca;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 
-public class PecaDeXadrez extends Peca {
+public abstract class PecaDeXadrez extends Peca {
 
 	private Cor cor;
 
