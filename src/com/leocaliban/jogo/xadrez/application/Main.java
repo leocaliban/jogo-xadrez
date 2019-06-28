@@ -24,11 +24,15 @@ public class Main {
 
 				UI.exibirTabuleiro(partida.getPecas());
 				System.out.println();
-				System.out.println("Origem: ");
+				System.out.print("Origem: ");
 				PosicaoXadrez posicaoOrigem = UI.informarPosicaoDaPeca(scan);
 
+				boolean[][] movimentosPermitidos = partida.movimencoesPermitidas(posicaoOrigem);
+				UI.limparTerminal();
+				UI.exibirTabuleiro(partida.getPecas(), movimentosPermitidos);
+
 				System.out.println();
-				System.out.println("Destino: ");
+				System.out.print("Destino: ");
 				PosicaoXadrez posicaoDestino = UI.informarPosicaoDaPeca(scan);
 
 				PecaDeXadrez pecaCapturada = partida.movimentarPeca(posicaoOrigem, posicaoDestino);

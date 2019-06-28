@@ -10,7 +10,7 @@ public class Tabuleiro {
 
 	public Tabuleiro(int linhas, int colunas) {
 		if (linhas < 1 || colunas < 1) {
-			throw new TabuleiroException("Erro ao criar o tabuleiro: É preciso haver pelo menos 1 linha e uma coluna.");
+			throw new TabuleiroException("Erro ao criar o tabuleiro: ï¿½ preciso haver pelo menos 1 linha e uma coluna.");
 		}
 		this.linhas = linhas;
 		this.colunas = colunas;
@@ -27,21 +27,21 @@ public class Tabuleiro {
 
 	public Peca buscarPecaPorCoordenadas(int linha, int coluna) {
 		if (!posicaoExiste(linha, coluna)) {
-			throw new TabuleiroException("Posição fora dos limítes do tabuleiro.");
+			throw new TabuleiroException("Posiï¿½ï¿½o fora dos limï¿½tes do tabuleiro.");
 		}
 		return pecas[linha][coluna];
 	}
 
 	public Peca buscarPecaPorPosicao(Posicao posicao) {
 		if (!posicaoExiste(posicao)) {
-			throw new TabuleiroException("Posição fora dos limítes do tabuleiro.");
+			throw new TabuleiroException("Posiï¿½ï¿½o fora dos limï¿½tes do tabuleiro.");
 		}
 		return pecas[posicao.getLinha()][posicao.getColuna()];
 	}
 
 	public void posicionarPeca(Peca peca, Posicao posicao) {
 		if (existePeca(posicao)) {
-			throw new TabuleiroException("Já existe uma peça na posição: " + posicao);
+			throw new TabuleiroException("Jï¿½ existe uma peï¿½a na posiï¿½ï¿½o: " + posicao);
 		}
 		pecas[posicao.getLinha()][posicao.getColuna()] = peca;
 		peca.posicao = posicao;
@@ -49,7 +49,7 @@ public class Tabuleiro {
 
 	public Peca removerPeca(Posicao posicao) {
 		if (!posicaoExiste(posicao)) {
-			throw new TabuleiroException("Posição fora dos limítes do tabuleiro.");
+			throw new TabuleiroException("Posiï¿½ï¿½o fora dos limï¿½tes do tabuleiro.");
 		}
 
 		if (buscarPecaPorPosicao(posicao) == null) {
@@ -72,7 +72,7 @@ public class Tabuleiro {
 
 	public boolean existePeca(Posicao posicao) {
 		if (!posicaoExiste(posicao)) {
-			throw new TabuleiroException("Posição fora dos limítes do tabuleiro.");
+			throw new TabuleiroException("Posiï¿½ï¿½o fora dos limï¿½tes do tabuleiro.");
 		}
 		return buscarPecaPorPosicao(posicao) != null;
 	}
