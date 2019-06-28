@@ -1,6 +1,10 @@
 package com.leocaliban.jogo.xadrez.application;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
+
 import com.leocaliban.jogo.xadrez.xadrez.PecaDeXadrez;
+import com.leocaliban.jogo.xadrez.xadrez.PosicaoXadrez;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 
 public class UI {
@@ -23,6 +27,19 @@ public class UI {
 	public static final String ANSI_PURPLE_BACKGROUND = "\u001B[45m";
 	public static final String ANSI_CYAN_BACKGROUND = "\u001B[46m";
 	public static final String ANSI_WHITE_BACKGROUND = "\u001B[47m";
+
+	public static PosicaoXadrez informarPosicaoDaPeca(Scanner scan) {
+		try {
+			String movimento = scan.nextLine();
+
+			char coluna = movimento.charAt(0);
+			int linha = Integer.parseInt(movimento.substring(1));
+
+			return new PosicaoXadrez(coluna, linha);
+		} catch (RuntimeException e) {
+			throw new InputMismatchException("Erro ao ler a posição no tabuleiro. Valores válidos: A1 ao H8");
+		}
+	}
 
 	public static void exibirTabuleiro(PecaDeXadrez[][] pecas) {
 		for (int i = 0; i < pecas.length; i++) {

@@ -1,6 +1,8 @@
 package com.leocaliban.jogo.xadrez.xadrez.exceptions;
 
-public class XadrezException extends RuntimeException {
+import com.leocaliban.jogo.xadrez.tabuleiro.exceptions.TabuleiroException;
+
+public class XadrezException extends TabuleiroException {
 
 	private static final long serialVersionUID = 1L;
 

@@ -1,7 +1,10 @@
 package com.leocaliban.jogo.xadrez.xadrez;
 
+import com.leocaliban.jogo.xadrez.tabuleiro.Peca;
+import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
+import com.leocaliban.jogo.xadrez.xadrez.exceptions.XadrezException;
 import com.leocaliban.jogo.xadrez.xadrez.pecas.Rei;
 import com.leocaliban.jogo.xadrez.xadrez.pecas.Torre;
 
@@ -24,6 +27,30 @@ public class Partida {
 		return matriz;
 	}
 
+	public PecaDeXadrez movimentarPeca(PosicaoXadrez posicaoOrigem, PosicaoXadrez posicaoDestino) {
+		Posicao origem = posicaoOrigem.toPosicao();
+		Posicao destino = posicaoDestino.toPosicao();
+
+		validarPosicaoDeOrigem(origem);
+		Peca pecaCapturada = realizarMovimento(origem, destino);
+		return (PecaDeXadrez) pecaCapturada;
+	}
+
+	private Peca realizarMovimento(Posicao origem, Posicao destino) {
+		Peca peca = tabuleiro.removerPeca(origem);
+		Peca pecaCapturada = tabuleiro.removerPeca(destino);
+
+		tabuleiro.posicionarPeca(peca, destino);
+
+		return pecaCapturada;
+	}
+
+	private void validarPosicaoDeOrigem(Posicao posicao) {
+		if (!tabuleiro.existePeca(posicao)) {
+			throw new XadrezException("Não existe peça na posição de origem.");
+		}
+	}
+
 	private void posicionarNovaPeca(char coluna, int linha, PecaDeXadrez peca) {
 		tabuleiro.posicionarPeca(peca, new PosicaoXadrez(coluna, linha).toPosicao());
 	}
@@ -35,8 +62,7 @@ public class Partida {
 		posicionarNovaPeca('e', 2, new Torre(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('e', 1, new Torre(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('d', 1, new Rei(tabuleiro, Cor.BRANCO));
-		
-		
+
 		posicionarNovaPeca('c', 7, new Torre(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('c', 8, new Torre(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('d', 7, new Torre(tabuleiro, Cor.PRETO));
