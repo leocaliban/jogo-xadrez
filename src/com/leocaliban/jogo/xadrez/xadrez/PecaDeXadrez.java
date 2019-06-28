@@ -1,6 +1,7 @@
 package com.leocaliban.jogo.xadrez.xadrez;
 
 import com.leocaliban.jogo.xadrez.tabuleiro.Peca;
+import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 
@@ -15,6 +16,11 @@ public abstract class PecaDeXadrez extends Peca {
 
 	public Cor getCor() {
 		return cor;
+	}
+
+	protected boolean isPecaDoAdversario(Posicao posicao) {
+		PecaDeXadrez peca = (PecaDeXadrez) getTabuleiro().buscarPecaPorPosicao(posicao);
+		return peca != null && peca.getCor() != cor;
 	}
 
 }
