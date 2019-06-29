@@ -1,6 +1,8 @@
 package com.leocaliban.jogo.xadrez.application;
 
+import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 import com.leocaliban.jogo.xadrez.xadrez.Partida;
@@ -16,13 +18,14 @@ public class Main {
 		Scanner scan = new Scanner(System.in);
 
 		Partida partida = new Partida();
+		List<PecaDeXadrez> pecasCapturadas = new ArrayList<>();
 
 		while (true) {
 
 			try {
 				UI.limparTerminal();
 
-				UI.exibirPartida(partida);
+				UI.exibirPartida(partida, pecasCapturadas);
 				System.out.println();
 				System.out.print("Origem: ");
 				PosicaoXadrez posicaoOrigem = UI.informarPosicaoDaPeca(scan);
@@ -36,6 +39,10 @@ public class Main {
 				PosicaoXadrez posicaoDestino = UI.informarPosicaoDaPeca(scan);
 
 				PecaDeXadrez pecaCapturada = partida.movimentarPeca(posicaoOrigem, posicaoDestino);
+
+				if (pecaCapturada != null) {
+					pecasCapturadas.add(pecaCapturada);
+				}
 			} catch (XadrezException e) {
 				System.out.println(e.getMessage());
 				scan.nextLine();
