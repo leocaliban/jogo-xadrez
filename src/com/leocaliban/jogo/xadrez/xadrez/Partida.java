@@ -10,11 +10,16 @@ import com.leocaliban.jogo.xadrez.xadrez.pecas.Torre;
 
 public class Partida {
 
+	private int turno;
+	private Cor jogadorAtual;
 	private Tabuleiro tabuleiro;
 
 	public Partida() {
 		this.tabuleiro = new Tabuleiro(8, 8);
+		this.turno = 1;
+		this.jogadorAtual = Cor.BRANCO;
 		this.inicializar();
+
 	}
 
 	public PecaDeXadrez[][] getPecas() {
@@ -40,6 +45,7 @@ public class Partida {
 		validarPosicaoDeOrigem(origem);
 		validarPosicaoDeDestino(origem, destino);
 		Peca pecaCapturada = realizarMovimento(origem, destino);
+		passarVez();
 		return (PecaDeXadrez) pecaCapturada;
 	}
 
@@ -54,19 +60,27 @@ public class Partida {
 
 	private void validarPosicaoDeOrigem(Posicao posicao) {
 		if (!tabuleiro.existePeca(posicao)) {
-			throw new XadrezException("Nï¿½o existe peï¿½a na posiï¿½ï¿½o de origem.");
+			throw new XadrezException("Não existe peça na posição de origem.");
+		}
+
+		if (jogadorAtual != ((PecaDeXadrez) tabuleiro.buscarPecaPorPosicao(posicao)).getCor()) {
+			throw new XadrezException("A peça escolhida não é sua.");
 		}
 
 		if (!tabuleiro.buscarPecaPorPosicao(posicao).isMovimentoPermitido()) {
-			throw new XadrezException("Nï¿½o existe movimentos permitidos para a peï¿½a selecionada.");
+			throw new XadrezException("Não existe movimentos permitidos para a peça selecionada.");
 		}
 	}
 
 	private void validarPosicaoDeDestino(Posicao origem, Posicao destino) {
 		if (!tabuleiro.buscarPecaPorPosicao(origem).movimentosPermitidos(destino)) {
-			throw new XadrezException("A peï¿½a selecionada nï¿½o pode ser movida para o destino escolhido.");
+			throw new XadrezException("A peça selecionada não pode ser movida para o destino escolhido.");
 		}
+	}
 
+	private void passarVez() {
+		turno++;
+		jogadorAtual = (jogadorAtual == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
 	}
 
 	private void posicionarNovaPeca(char coluna, int linha, PecaDeXadrez peca) {
@@ -88,4 +102,13 @@ public class Partida {
 		posicionarNovaPeca('e', 8, new Torre(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('d', 8, new Rei(tabuleiro, Cor.PRETO));
 	}
+
+	public int getTurno() {
+		return turno;
+	}
+
+	public Cor getJogadorAtual() {
+		return jogadorAtual;
+	}
+
 }

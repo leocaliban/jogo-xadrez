@@ -3,6 +3,7 @@ package com.leocaliban.jogo.xadrez.application;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import com.leocaliban.jogo.xadrez.xadrez.Partida;
 import com.leocaliban.jogo.xadrez.xadrez.PecaDeXadrez;
 import com.leocaliban.jogo.xadrez.xadrez.PosicaoXadrez;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
@@ -46,6 +47,13 @@ public class UI {
 		}
 	}
 
+	public static void exibirPartida(Partida partida) {
+		exibirTabuleiro(partida.getPecas());
+		System.out.println();
+		System.out.println("Turno: " + partida.getTurno());
+		System.out.println("Aguardando jogador: " + partida.getJogadorAtual());
+	}
+	
 	public static void exibirTabuleiro(PecaDeXadrez[][] pecas) {
 		for (int i = 0; i < pecas.length; i++) {
 			System.out.print((8 - i) + " ");

@@ -22,7 +22,7 @@ public class Main {
 			try {
 				UI.limparTerminal();
 
-				UI.exibirTabuleiro(partida.getPecas());
+				UI.exibirPartida(partida);
 				System.out.println();
 				System.out.print("Origem: ");
 				PosicaoXadrez posicaoOrigem = UI.informarPosicaoDaPeca(scan);
