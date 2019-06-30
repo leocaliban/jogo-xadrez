@@ -20,7 +20,7 @@ public class Main {
 		Partida partida = new Partida();
 		List<PecaDeXadrez> pecasCapturadas = new ArrayList<>();
 
-		while (true) {
+		while (!partida.isCheckMate()) {
 
 			try {
 				UI.limparTerminal();
@@ -51,6 +51,9 @@ public class Main {
 				scan.nextLine();
 			}
 		}
+		
+		UI.limparTerminal();
+		UI.exibirPartida(partida, pecasCapturadas);
 	}
 
 }
