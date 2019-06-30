@@ -2,6 +2,7 @@ package com.leocaliban.jogo.xadrez.xadrez;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.leocaliban.jogo.xadrez.tabuleiro.Peca;
 import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
@@ -16,6 +17,7 @@ public class Partida {
 	private int turno;
 	private Cor jogadorAtual;
 	private Tabuleiro tabuleiro;
+	private boolean check;
 
 	private List<Peca> pecasNoTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
@@ -51,6 +53,14 @@ public class Partida {
 		validarPosicaoDeOrigem(origem);
 		validarPosicaoDeDestino(origem, destino);
 		Peca pecaCapturada = realizarMovimento(origem, destino);
+
+		if (testarCheck(jogadorAtual)) {
+			desfazerMovimento(origem, destino, pecaCapturada);
+			throw new XadrezException("Voc√™ n√£o pode se colocar em CHECK!");
+		}
+
+		check = (testarCheck(obterOponente(jogadorAtual))) ? true : false;
+
 		passarVez();
 		return (PecaDeXadrez) pecaCapturada;
 	}
@@ -58,7 +68,7 @@ public class Partida {
 	private Peca realizarMovimento(Posicao origem, Posicao destino) {
 		Peca peca = tabuleiro.removerPeca(origem);
 		Peca pecaCapturada = tabuleiro.removerPeca(destino);
-		
+
 		if (pecaCapturada != null) {
 			pecasNoTabuleiro.remove(pecaCapturada);
 			pecasCapturadas.add(pecaCapturada);
@@ -69,29 +79,70 @@ public class Partida {
 		return pecaCapturada;
 	}
 
+	private void desfazerMovimento(Posicao origem, Posicao destino, Peca pecaCapturada) {
+		Peca peca = tabuleiro.removerPeca(destino);
+		tabuleiro.posicionarPeca(peca, origem);
+
+		if (pecaCapturada != null) {
+			tabuleiro.posicionarPeca(pecaCapturada, destino);
+			pecasCapturadas.remove(pecaCapturada);
+			pecasNoTabuleiro.add(pecaCapturada);
+		}
+	}
+
 	private void validarPosicaoDeOrigem(Posicao posicao) {
 		if (!tabuleiro.existePeca(posicao)) {
-			throw new XadrezException("N„o existe peÁa na posiÁ„o de origem.");
+			throw new XadrezException("N√£o existe pe√ßa na posi√ß√£o de origem.");
 		}
 
 		if (jogadorAtual != ((PecaDeXadrez) tabuleiro.buscarPecaPorPosicao(posicao)).getCor()) {
-			throw new XadrezException("A peÁa escolhida n„o È sua.");
+			throw new XadrezException("A pe√ßa escolhida n√£o √© sua.");
 		}
 
 		if (!tabuleiro.buscarPecaPorPosicao(posicao).isMovimentoPermitido()) {
-			throw new XadrezException("N„o existe movimentos permitidos para a peÁa selecionada.");
+			throw new XadrezException("N√£o existe movimentos permitidos para a pe√ßa selecionada.");
 		}
 	}
 
 	private void validarPosicaoDeDestino(Posicao origem, Posicao destino) {
 		if (!tabuleiro.buscarPecaPorPosicao(origem).movimentosPermitidos(destino)) {
-			throw new XadrezException("A peÁa selecionada n„o pode ser movida para o destino escolhido.");
+			throw new XadrezException("A pe√ßa selecionada n√£o pode ser movida para o destino escolhido.");
 		}
 	}
 
 	private void passarVez() {
 		turno++;
 		jogadorAtual = (jogadorAtual == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+	}
+
+	private Cor obterOponente(Cor cor) {
+		return (cor == Cor.BRANCO) ? Cor.PRETO : Cor.BRANCO;
+	}
+
+	private PecaDeXadrez buscarRei(Cor cor) {
+		List<Peca> pecas = pecasNoTabuleiro.stream().filter(p -> ((PecaDeXadrez) p).getCor() == cor)
+				.collect(Collectors.toList());
+
+		for (Peca p : pecas) {
+			if (p instanceof Rei) {
+				return (PecaDeXadrez) p;
+			}
+		}
+		throw new IllegalStateException("N√£o existe REI de cor " + cor + " no tabuleiro.");
+	}
+
+	private boolean testarCheck(Cor cor) {
+		Posicao posicaoRei = buscarRei(cor).getPocicaoXadrez().toPosicao();
+		List<Peca> pecasOponente = pecasNoTabuleiro.stream()
+				.filter(p -> ((PecaDeXadrez) p).getCor() == obterOponente(cor)).collect(Collectors.toList());
+
+		for (Peca peca : pecasOponente) {
+			boolean[][] matriz = peca.movimentosPermitidos();
+			if (matriz[posicaoRei.getLinha()][posicaoRei.getColuna()]) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private void posicionarNovaPeca(char coluna, int linha, PecaDeXadrez peca) {
@@ -121,6 +172,10 @@ public class Partida {
 
 	public Cor getJogadorAtual() {
 		return jogadorAtual;
+	}
+
+	public boolean isCheck() {
+		return check;
 	}
 
 }
