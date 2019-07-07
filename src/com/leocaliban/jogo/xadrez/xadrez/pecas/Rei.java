@@ -2,18 +2,27 @@ package com.leocaliban.jogo.xadrez.xadrez.pecas;
 
 import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
+import com.leocaliban.jogo.xadrez.xadrez.Partida;
 import com.leocaliban.jogo.xadrez.xadrez.PecaDeXadrez;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 
 public class Rei extends PecaDeXadrez {
 
-	public Rei(Tabuleiro tabuleiro, Cor cor) {
+	private Partida partida;
+
+	public Rei(Tabuleiro tabuleiro, Cor cor, Partida partida) {
 		super(tabuleiro, cor);
+		this.partida = partida;
 	}
 
 	@Override
 	public String toString() {
 		return "K";
+	}
+
+	private boolean testarRoque(Posicao posicao) {
+		PecaDeXadrez peca = (PecaDeXadrez) getTabuleiro().buscarPecaPorPosicao(posicao);
+		return peca != null && peca instanceof Torre && peca.getCor() == getCor() && peca.getContagemMovimentos() == 0;
 	}
 
 	@Override
@@ -22,52 +31,78 @@ public class Rei extends PecaDeXadrez {
 
 		Posicao posicaoAux = new Posicao(0, 0);
 
-		// Marcando posições acima
+		// Marcando posiï¿½ï¿½es acima
 		posicaoAux.setValores(posicao.getLinha() - 1, posicao.getColuna());
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições à esquerda
+		// Marcando posiï¿½ï¿½es ï¿½ esquerda
 		posicaoAux.setValores(posicao.getLinha(), posicao.getColuna() - 1);
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições à direita
+		// Marcando posiï¿½ï¿½es ï¿½ direita
 		posicaoAux.setValores(posicao.getLinha(), posicao.getColuna() + 1);
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições abaixo
+		// Marcando posiï¿½ï¿½es abaixo
 		posicaoAux.setValores(posicao.getLinha() + 1, posicao.getColuna());
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições à esquerda/acima
+		// Marcando posiï¿½ï¿½es ï¿½ esquerda/acima
 		posicaoAux.setValores(posicao.getLinha() - 1, posicao.getColuna() - 1);
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições à direita/abaixo
+		// Marcando posiï¿½ï¿½es ï¿½ direita/abaixo
 		posicaoAux.setValores(posicao.getLinha() + 1, posicao.getColuna() + 1);
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições à esquerda/abaixo
+		// Marcando posiï¿½ï¿½es ï¿½ esquerda/abaixo
 		posicaoAux.setValores(posicao.getLinha() + 1, posicao.getColuna() - 1);
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
 		}
 
-		// Marcando posições à direita/acima
+		// Marcando posiï¿½ï¿½es ï¿½ direita/acima
 		posicaoAux.setValores(posicao.getLinha() - 1, posicao.getColuna() + 1);
 		if (getTabuleiro().posicaoExiste(posicaoAux) && podeMoverPara(posicaoAux)) {
 			matriz[posicaoAux.getLinha()][posicaoAux.getColuna()] = true;
+		}
+
+		// Movimento de ROQUE
+		if (getContagemMovimentos() == 0 && !partida.isCheck()) {
+			// Teste roque lado rei
+			Posicao posicaoTorre1 = new Posicao(posicao.getLinha(), posicao.getColuna() + 3);
+			if (testarRoque(posicaoTorre1)) {
+				Posicao posicao1 = new Posicao(posicao.getLinha(), posicao.getColuna() + 1);
+				Posicao posicao2 = new Posicao(posicao.getLinha(), posicao.getColuna() + 2);
+				if (getTabuleiro().buscarPecaPorPosicao(posicao1) == null
+						&& getTabuleiro().buscarPecaPorPosicao(posicao2) == null) {
+					matriz[posicao.getLinha()][posicao.getColuna() + 2] = true;
+				}
+			}
+			// Teste roque lado rainha
+			Posicao posicaoTorre2 = new Posicao(posicao.getLinha(), posicao.getColuna() - 4);
+			if (testarRoque(posicaoTorre2)) {
+				Posicao posicao1 = new Posicao(posicao.getLinha(), posicao.getColuna() - 1);
+				Posicao posicao2 = new Posicao(posicao.getLinha(), posicao.getColuna() - 2);
+				Posicao posicao3 = new Posicao(posicao.getLinha(), posicao.getColuna() - 3);
+				if (getTabuleiro().buscarPecaPorPosicao(posicao1) == null
+						&& getTabuleiro().buscarPecaPorPosicao(posicao2) == null
+						&& getTabuleiro().buscarPecaPorPosicao(posicao3) == null) {
+					matriz[posicao.getLinha()][posicao.getColuna() - 2] = true;
+				}
+			}
 		}
 		return matriz;
 	}

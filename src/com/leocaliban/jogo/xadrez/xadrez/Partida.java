@@ -194,7 +194,7 @@ public class Partida {
 		posicionarNovaPeca('b', 1, new Cavalo(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('c', 1, new Bispo(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('d', 1, new Rainha(tabuleiro, Cor.BRANCO));
-		posicionarNovaPeca('e', 1, new Rei(tabuleiro, Cor.BRANCO));
+		posicionarNovaPeca('e', 1, new Rei(tabuleiro, Cor.BRANCO, this));
 		posicionarNovaPeca('f', 1, new Bispo(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('g', 1, new Cavalo(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('h', 1, new Torre(tabuleiro, Cor.BRANCO));
@@ -211,7 +211,7 @@ public class Partida {
 		posicionarNovaPeca('b', 8, new Cavalo(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('c', 8, new Bispo(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('d', 8, new Rainha(tabuleiro, Cor.PRETO));
-		posicionarNovaPeca('e', 8, new Rei(tabuleiro, Cor.PRETO));
+		posicionarNovaPeca('e', 8, new Rei(tabuleiro, Cor.PRETO, this));
 		posicionarNovaPeca('f', 8, new Bispo(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('g', 8, new Cavalo(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('h', 8, new Torre(tabuleiro, Cor.PRETO));
