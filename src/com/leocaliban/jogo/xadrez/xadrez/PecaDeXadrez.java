@@ -8,6 +8,7 @@ import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 public abstract class PecaDeXadrez extends Peca {
 
 	private Cor cor;
+	private int contagemMovimentos;
 
 	public PecaDeXadrez(Tabuleiro tabuleiro, Cor cor) {
 		super(tabuleiro);
@@ -16,6 +17,18 @@ public abstract class PecaDeXadrez extends Peca {
 
 	public Cor getCor() {
 		return cor;
+	}
+
+	public int getContagemMovimentos() {
+		return contagemMovimentos;
+	}
+
+	public void adicionarContagem() {
+		contagemMovimentos++;
+	}
+
+	public void removerContagem() {
+		contagemMovimentos--;
 	}
 
 	public PosicaoXadrez getPocicaoXadrez() {
