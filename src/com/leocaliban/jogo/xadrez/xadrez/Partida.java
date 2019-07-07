@@ -9,6 +9,7 @@ import com.leocaliban.jogo.xadrez.tabuleiro.Posicao;
 import com.leocaliban.jogo.xadrez.tabuleiro.Tabuleiro;
 import com.leocaliban.jogo.xadrez.xadrez.enums.Cor;
 import com.leocaliban.jogo.xadrez.xadrez.exceptions.XadrezException;
+import com.leocaliban.jogo.xadrez.xadrez.pecas.Bispo;
 import com.leocaliban.jogo.xadrez.xadrez.pecas.Peao;
 import com.leocaliban.jogo.xadrez.xadrez.pecas.Rei;
 import com.leocaliban.jogo.xadrez.xadrez.pecas.Torre;
@@ -188,7 +189,9 @@ public class Partida {
 
 	private void inicializar() {
 		posicionarNovaPeca('a', 1, new Torre(tabuleiro, Cor.BRANCO));
+		posicionarNovaPeca('c', 1, new Bispo(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('e', 1, new Rei(tabuleiro, Cor.BRANCO));
+		posicionarNovaPeca('f', 1, new Bispo(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('h', 1, new Torre(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('a', 2, new Peao(tabuleiro, Cor.BRANCO));
 		posicionarNovaPeca('b', 2, new Peao(tabuleiro, Cor.BRANCO));
@@ -200,7 +203,9 @@ public class Partida {
 		posicionarNovaPeca('h', 2, new Peao(tabuleiro, Cor.BRANCO));
 
 		posicionarNovaPeca('a', 8, new Torre(tabuleiro, Cor.PRETO));
+		posicionarNovaPeca('c', 8, new Bispo(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('e', 8, new Rei(tabuleiro, Cor.PRETO));
+		posicionarNovaPeca('f', 8, new Bispo(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('h', 8, new Torre(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('a', 7, new Peao(tabuleiro, Cor.PRETO));
 		posicionarNovaPeca('b', 7, new Peao(tabuleiro, Cor.PRETO));
