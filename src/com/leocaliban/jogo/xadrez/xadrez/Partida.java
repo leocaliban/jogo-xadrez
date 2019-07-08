@@ -1,5 +1,6 @@
 package com.leocaliban.jogo.xadrez.xadrez;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +25,7 @@ public class Partida {
 	private boolean check;
 	private boolean checkMate;
 	private PecaDeXadrez enPassant;
+	private PecaDeXadrez promovida;
 
 	private List<Peca> pecasNoTabuleiro = new ArrayList<>();
 	private List<Peca> pecasCapturadas = new ArrayList<>();
@@ -67,6 +69,16 @@ public class Partida {
 
 		PecaDeXadrez pecaMovida = (PecaDeXadrez) tabuleiro.buscarPecaPorPosicao(destino);
 
+		// Promoção
+		promovida = null;
+		if (pecaMovida instanceof Peao) {
+			if ((pecaMovida.getCor() == Cor.BRANCO && destino.getLinha() == 0)
+					|| (pecaMovida.getCor() == Cor.PRETO && destino.getLinha() == 7)) {
+				promovida = (PecaDeXadrez) tabuleiro.buscarPecaPorPosicao(destino);
+				promovida = reposicionarPecaPromovida("R");
+			}
+		}
+
 		check = (testarCheck(obterOponente(jogadorAtual))) ? true : false;
 
 		if (testarCheckMate(obterOponente(jogadorAtual))) {
@@ -83,6 +95,38 @@ public class Partida {
 			enPassant = null;
 		}
 		return (PecaDeXadrez) pecaCapturada;
+	}
+
+	public PecaDeXadrez reposicionarPecaPromovida(String tipoPeca) {
+		if (promovida == null) {
+			throw new IllegalStateException("Não existe peça para ser promovida.");
+		}
+		if (!tipoPeca.equalsIgnoreCase("B") && !tipoPeca.equalsIgnoreCase("C") && !tipoPeca.equalsIgnoreCase("T")
+				& !tipoPeca.equalsIgnoreCase("R")) {
+			throw new InvalidParameterException("Tipo inválido para promover.");
+		}
+		Posicao posicao = promovida.getPocicaoXadrez().toPosicao();
+		Peca peca = tabuleiro.removerPeca(posicao);
+		pecasNoTabuleiro.remove(peca);
+
+		PecaDeXadrez pecaPromovida = promoverPeca(tipoPeca, promovida.getCor());
+		tabuleiro.posicionarPeca(pecaPromovida, posicao);
+		pecasNoTabuleiro.add(pecaPromovida);
+		return pecaPromovida;
+	}
+
+	private PecaDeXadrez promoverPeca(String tipo, Cor cor) {
+		if (tipo.equalsIgnoreCase("B")) {
+			return new Bispo(tabuleiro, cor);
+		}
+		if (tipo.equalsIgnoreCase("C")) {
+			return new Cavalo(tabuleiro, cor);
+		}
+		if (tipo.equalsIgnoreCase("T")) {
+			return new Torre(tabuleiro, cor);
+		}
+		return new Rainha(tabuleiro, cor);
+
 	}
 
 	private Peca realizarMovimento(Posicao origem, Posicao destino) {
@@ -321,6 +365,10 @@ public class Partida {
 
 	public PecaDeXadrez getEnPassant() {
 		return enPassant;
+	}
+
+	public PecaDeXadrez getPromovida() {
+		return promovida;
 	}
 
 }

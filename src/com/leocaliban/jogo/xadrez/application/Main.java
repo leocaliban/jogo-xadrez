@@ -43,6 +43,12 @@ public class Main {
 				if (pecaCapturada != null) {
 					pecasCapturadas.add(pecaCapturada);
 				}
+
+				if (partida.getPromovida() != null) {
+					System.out.print("Selecione uma peça para promoção [B - C - T - R]: ");
+					String tipo = scan.nextLine();
+					partida.reposicionarPecaPromovida(tipo);
+				}
 			} catch (XadrezException e) {
 				System.out.println(e.getMessage());
 				scan.nextLine();
@@ -51,7 +57,7 @@ public class Main {
 				scan.nextLine();
 			}
 		}
-		
+
 		UI.limparTerminal();
 		UI.exibirPartida(partida, pecasCapturadas);
 	}
